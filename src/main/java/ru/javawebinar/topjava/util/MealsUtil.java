@@ -52,7 +52,7 @@ public class MealsUtil {
 
         final List<MealTo> mealsWithExcess = new ArrayList<>();
         meals.forEach(meal -> {
-            if (DateTimeUtil.isBetween(meal.getTime(), startTime, endTime)) {
+            if (Util.isBetween(meal.getTime(), startTime, endTime)) {
                 mealsWithExcess.add(createWithExcess(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay));
             }
         });
@@ -66,7 +66,7 @@ public class MealsUtil {
         return list.stream().flatMap(dayMeals -> {
             boolean excess = dayMeals.stream().mapToInt(Meal::getCalories).sum() > caloriesPerDay;
             return dayMeals.stream().filter(meal ->
-                    DateTimeUtil.isBetween(meal.getTime(), startTime, endTime))
+                    Util.isBetween(meal.getTime(), startTime, endTime))
                     .map(meal -> createWithExcess(meal, excess));
         }).collect(toList());
     }
@@ -78,7 +78,7 @@ public class MealsUtil {
 
             private void accumulate(Meal meal) {
                 dailySumOfCalories += meal.getCalories();
-                if (DateTimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime)) {
+                if (Util.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime)) {
                     dailyMeals.add(meal);
                 }
             }
