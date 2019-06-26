@@ -40,13 +40,14 @@ public class MealServiceTest {
         Meal created = service.create(newMeal, USER_ID);
         newMeal.setId(created.getId());
         assertMatch(newMeal, created);
-        assertMatch(service.getAll(USER_ID), newMeal, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
+        assertMatch(service.getAll(USER_ID), newMeal, ADMIN_MEAL1, USER_MEAL5, USER_MEAL4,
+                                                      USER_MEAL3, USER_MEAL2, USER_MEAL1);
     }
 
     @Test
     public void get() {
-        Meal actual = service.get(MEAL_1, USER_ID);
-        assertMatch(actual, MEAL1);
+        Meal actual = service.get(USER_MEAL, USER_ID);
+        assertMatch(actual, USER_MEAL1);
     }
 
     @Test
@@ -58,34 +59,34 @@ public class MealServiceTest {
     public void getBetween() {
         assertMatch(service.getBetweenDates(
                 LocalDate.of(2015, Month.MAY, 30),
-                LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
+                LocalDate.of(2015, Month.MAY, 30), USER_ID), USER_MEAL3, USER_MEAL2, USER_MEAL1);
     }
 
     @Test(expected = NotFoundException.class)
     public void getNotFound() throws Exception {
-        service.get(MEAL_1, ADMIN_ID);
+        service.get(USER_MEAL, ADMIN_ID);
     }
 
     @Test
     public void update() {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
-        assertMatch(service.get(MEAL_1, USER_ID), updated);
+        assertMatch(service.get(USER_MEAL, USER_ID), updated);
     }
 
     @Test(expected = NotFoundException.class)
     public void updateNotFound() throws Exception {
-        service.update(MEAL1, ADMIN_ID);
+        service.update(ADMIN_MEAL1, ADMIN_ID);
     }
 
     @Test
     public void delete() {
-        service.delete(MEAL_1, USER_ID);
-        assertMatch(service.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2);
+        service.delete(USER_MEAL, USER_ID);
+        assertMatch(service.getAll(USER_ID), ADMIN_MEAL1, USER_MEAL5, USER_MEAL4, USER_MEAL3, USER_MEAL2);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteNotFound() throws Exception {
-        service.delete(MEAL_1, 1);
+        service.delete(USER_MEAL, 1);
     }
 }
